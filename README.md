@@ -114,7 +114,7 @@ Teknik menggabungkan beberapa model (seperti Random Forest atau Gradient Boostin
 
 ---
 
-## - Informasi Tambahan
+## Informasi Tambahan
 
 | Informasi          | Keterangan                    |
 | ------------------ | ----------------------------- |
