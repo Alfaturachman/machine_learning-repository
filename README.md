@@ -6,71 +6,20 @@ Selamat datang di repositori pembelajaran **Machine Learning (Pembelajaran Mesin
 
 ## Daftar Isi
 
-- [Struktur Repositori](#struktur-repositori)
-- [Cara Penggunaan](#cara-penggunaan)
 - [Notebooks](#notebooks)
 - [Paradigma Pembelajaran](#paradigma-pembelajaran)
 - [Siklus Data & Preparation](#siklus-data--preparation)
 - [EDA (Exploratory Data Analysis)](#eda-exploratory-data-analysis)
-- [Algoritma & Model](#algoritma--model)
+- [Supervised Learning](#supervised-learning)
+- [Unsupervised Learning](#unsupervised-learning)
+- [Artificial Neural Network](#artificial-neural-network)
 - [Prosedur Pengembangan Model](#prosedur-pengembangan-model)
 - [Bias, Variance & Fitting](#bias-variance--fitting)
-- [Unsupervised Learning](#unsupervised-learning)
 - [Feature Engineering](#feature-engineering)
 - [Error Analysis](#error-analysis)
-- [Ringkasan Performa](#ringkasan-performa)
+- [Model Deployment](#model-deployment)
 - [Persyaratan Sistem](#persyaratan-sistem)
 - [Informasi Tambahan](#informasi-tambahan)
-
----
-
-## Struktur Repositori
-
-```
-REPO/
-├── data/                           # Dataset terpusat
-│   ├── Social_Network_Ads.csv
-│   ├── Dataset Iris.csv
-│   ├── SMSSpam.csv
-│   ├── heart_disease_data.csv
-│   └── dataset_kelulusan_mahasiswa.csv
-├── notebooks/                      # Notebook pembelajaran
-│   ├── 01-Linear-Regression/       # Linear Regression - SMS Spam
-│   ├── 02-Logistic-Regression/     # Logistic Regression - Heart Disease
-│   ├── 03-K-Nearest-Neighbors/     # K-NN - Social Network Ads
-│   ├── 04-Naive-Bayes/             # Naive Bayes - Social & SMS
-│   ├── 05-Decision-Tree/           # Decision Tree - Iris Dataset
-│   ├── 06-Random-Forest/           # Random Forest - Kelulusan
-│   ├── 07-Unsupervised-Learning/   # K-Means + PCA - Iris
-│   ├── 08-Feature-Engineering/     # Polynomial, Interaction, Binning
-│   ├── 09-Cross-Validation/        # K-Fold CV - Heart Disease
-│   └── 10-Error-Analysis/          # FP/FN Case Study - Heart
-├── utils/                          # Modul Python reusable
-│   ├── __init__.py
-│   ├── evaluation.py               # Confusion matrix, ROC, dll
-│   └── preprocessing.py            # Split, encoding, scaling
-├── .gitignore
-├── requirements.txt
-└── README.md
-```
-
----
-
-## Cara Penggunaan
-
-1. Install dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-2. Jalankan Jupyter:
-
-    ```bash
-    jupyter notebook
-    ```
-
-3. Buka notebook di `notebooks/` dan jalankan sel-selnya.
 
 ---
 
@@ -90,6 +39,13 @@ REPO/
 | 10  | Feature Engineering       | Social Network Ads  | Polynomial features, interaction, binning           |
 | 11  | K-Fold Cross Validation   | Heart Disease       | Perbandingan stabilitas antar model                 |
 | 12  | Error Analysis            | Heart Disease       | False Positive & False Negative case study          |
+| 13  | SVM                       | Iris (built-in)     | Support Vector Machine dengan 3 kernel              |
+| 14  | Gradient Boosting         | Heart Disease       | AdaBoost & GradientBoosting                         |
+| 15  | MLP Neural Network        | Medical Conditions  | Multi-Layer Perceptron dengan tuning                |
+| 16  | Regularization            | Social Network Ads  | Lasso, Ridge, ElasticNet                            |
+| 17  | Anomaly Detection         | Transaction Fraud   | Isolation Forest & Local Outlier Factor             |
+| 18  | Model Deployment          | Iris (built-in)     | Save/load model & FastAPI REST API                  |
+| 19  | Recommendation System     | E-commerce Behavior | Content-Based Filtering & Cosine Similarity         |
 
 ---
 
@@ -110,7 +66,7 @@ Repositori ini mencakup empat pilar utama metode pembelajaran:
 
 ### Data Lifecycle
 
-- **Data Acquisition**: Proses pengumpulan data dari berbagai sumber (API, Database, CSV, Scrapping).
+- **Data Acquisition**: Proses pengumpulan data dari berbagai sumber (API, Database, CSV, Scraping).
 - **Data Understanding**: Memahami struktur, tipe data, dan karakteristik awal dari dataset.
 - **Data Analysis (EDA)**: Menemukan pola, anomali, dan korelasi antar fitur menggunakan visualisasi.
 
@@ -151,7 +107,7 @@ Setiap notebook melakukan eksplorasi data sebelum modeling dengan pola umum beri
 
 ---
 
-## Algoritma & Model
+## Supervised Learning
 
 ### Regresi (Linear & Logistik)
 
@@ -173,6 +129,51 @@ Model prediksi berupa struktur pohon keputusan yang membagi data berdasarkan atu
 ### Ensemble Learning
 
 Teknik menggabungkan beberapa model (seperti Random Forest atau Gradient Boosting) untuk meningkatkan akurasi dan stabilitas prediksi dibandingkan model tunggal.
+
+### SVM (Support Vector Machine)
+
+SVM mencari hyperplane optimal yang memisahkan kelas dengan margin maksimal.
+
+**Dataset**: Iris (built-in) | **Notebook**: `11-SVM/SVM-Iris.ipynb`
+
+| Kernel     | Kegunaan                          | Kelebihan                       |
+| :--------- | :-------------------------------- | :------------------------------ |
+| Linear     | Data terpisah secara linear       | Cepat, interpretable            |
+| RBF        | Data non-linear, universal kernel | Fleksibel, cocok berbagai kasus |
+| Polynomial | Data dengan pola polynomial       | Menangkap interaksi kompleks    |
+
+- Hyperparameter `C` mengontrol trade-off margin vs misclassification
+- `gamma` mengontrol radius pengaruh support vector
+- GridSearchCV digunakan untuk menemukan kombinasi optimal
+
+### Gradient Boosting
+
+Teknik ensemble sekuensial yang memperbaiki kesalahan model sebelumnya.
+
+**Dataset**: Heart Disease | **Notebook**: `12-Gradient-Boosting/Gradient-Boosting-Heart.ipynb`
+
+| Algoritma             | Konsep Dasar                                         | Parameter Kunci                   |
+| :-------------------- | :--------------------------------------------------- | :-------------------------------- |
+| **AdaBoost**          | Memberi bobot lebih pada data yang salah klasifikasi | `n_estimators`, `learning_rate`   |
+| **Gradient Boosting** | Meminimalkan loss function dengan gradient descent   | `n_estimators`, `max_depth`, `lr` |
+
+- Lebih akurat dibanding model tunggal (decision tree)
+- Rentan overfitting jika `n_estimators` terlalu tinggi
+
+### Regularization
+
+Teknik mencegah overfitting dengan menambahkan penalty pada fungsi loss.
+
+**Dataset**: Social Network Ads | **Notebook**: `14-Regularization/Regularization-Social.ipynb`
+
+| Teknik         | Penalty | Efek                                            |
+| :------------- | :------ | :---------------------------------------------- |
+| **Ridge (L2)** | Σ(w^2)  | Menurunkan koefisien secara proporsional        |
+| **Lasso (L1)** | Σ\|w\|  | Membuat sebagian koefisien menjadi nol (sparse) |
+| **ElasticNet** | L1 + L2 | Kombinasi sparsity dan distribusi bobot         |
+
+- Parameter `C` (inverse regularization strength): semakin kecil → regularisasi semakin kuat
+- Lasso berguna untuk feature selection otomatis
 
 ---
 
@@ -204,20 +205,27 @@ Setiap notebook mengikuti pipeline yang konsisten:
 
 #### 3. Model Training
 
-| Notebook | Algoritma                | Parameter Kunci                                         |
-| -------- | ------------------------ | ------------------------------------------------------- |
-| 01       | `LinearRegression`       | Threshold optimal via ROC                               |
-| 02       | `LogisticRegression`     | `C=0.01`, `solver='liblinear'`, tuning via GridSearchCV |
-| 03       | `KNeighborsClassifier`   | `n_neighbors=3`, `metric='manhattan'`                   |
-| 04       | `GaussianNB`             | Default                                                 |
-| 05       | `MultinomialNB`          | Default                                                 |
-| 06       | `DecisionTreeClassifier` | `random_state=0`                                        |
-| 07       | `DecisionTreeClassifier` | `random_state=0`                                        |
-| 08       | `RandomForestClassifier` | `n_estimators=100`, `random_state=42`                   |
-| 09       | `KMeans` + `PCA`         | `n_clusters=3`, `n_components=2`                        |
-| 10       | `LogisticRegression`     | Feature engineering + scaling                           |
-| 11       | Multiple models          | K-Fold & StratifiedKFold (k=5,10)                       |
-| 12       | `LogisticRegression`     | Error analysis & confidence check                       |
+| Notebook | Algoritma                      | Parameter Kunci                                         |
+| -------- | ------------------------------ | ------------------------------------------------------- |
+| 01       | `LinearRegression`             | Threshold optimal via ROC                               |
+| 02       | `LogisticRegression`           | `C=0.01`, `solver='liblinear'`, tuning via GridSearchCV |
+| 03       | `KNeighborsClassifier`         | `n_neighbors=3`, `metric='manhattan'`                   |
+| 04       | `GaussianNB`                   | Default                                                 |
+| 05       | `MultinomialNB`                | Default                                                 |
+| 06       | `DecisionTreeClassifier`       | `random_state=0`                                        |
+| 07       | `DecisionTreeClassifier`       | `random_state=0`                                        |
+| 08       | `RandomForestClassifier`       | `n_estimators=100`, `random_state=42`                   |
+| 09       | `KMeans` + `PCA`               | `n_clusters=3`, `n_components=2`                        |
+| 10       | `LogisticRegression`           | Feature engineering + scaling                           |
+| 11       | Multiple models                | K-Fold & StratifiedKFold (k=5,10)                       |
+| 12       | `LogisticRegression`           | Error analysis & confidence check                       |
+| 13       | `SVC`                          | Linear, RBF, Polynomial kernels + GridSearchCV          |
+| 14       | `AdaBoost`, `GradientBoosting` | `n_estimators=100`, `learning_rate=0.1`                 |
+| 15       | `MLPClassifier`                | `(50,)`, `(100,)`, `(50,25)` + tuning activation/lr     |
+| 16       | `LogisticRegression`           | `penalty='l1'/'l2'/'elasticnet'`, tuning C              |
+| 17       | `IsolationForest`, `LOF`       | `contamination=0.1`, `n_neighbors=20`                   |
+| 18       | `RandomForestClassifier`       | Save with joblib & pickle, load & predict               |
+| 19       | Cosine Similarity, K-NN        | Content-Based Filtering, NearestNeighbors               |
 
 #### 4. Cross Validation
 
@@ -229,8 +237,11 @@ Setiap notebook mengikuti pipeline yang konsisten:
 
 - **Logistic Regression**: GridSearchCV pada `C` (0.01–100) dengan `StratifiedKFold` (5-fold)
 - **Random Forest**: `n_estimators=100` (default yang cukup stabil)
+- **Grid Search vs Random Search**: `GridSearchCV` melakukan pencarian komprehensif pada kombinasi parameter tertentu, sedangkan `RandomizedSearchCV` memilih kombinasi acak untuk efisiensi komputasi pada ruang hyperparameter yang luas.
 
 #### 6. Evaluation Metrics
+
+##### Metrik Klasifikasi
 
 | Metrik        | Rumus                 | Kegunaan                              |
 | ------------- | --------------------- | ------------------------------------- |
@@ -239,6 +250,14 @@ Setiap notebook mengikuti pipeline yang konsisten:
 | **Recall**    | TP/(TP+FN)            | Kemampuan menangkap semua positif     |
 | **F1-Score**  | 2 x P x R / (P+R)     | Rata-rata harmonik precision & recall |
 | **AUC-ROC**   | Area under curve      | Kemampuan diskriminasi kelas          |
+
+##### Metrik Regresi
+
+| Metrik                        | Rumus / Penjelasan                                            | Kegunaan                                                               |
+| ----------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **MSE** (Mean Squared Error)  | $\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$                | Mengukur rata-rata kuadrat kesalahan (sensitif terhadap outlier)       |
+| **MAE** (Mean Absolute Error) | $\frac{1}{n}\sum_{i=1}^{n}\vert y_i - \hat{y}_i\vert$         | Mengukur rata-rata absolut kesalahan (lebih robust terhadap outlier)   |
+| **R-squared** ($R^2$)         | $1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y}_i)^2}$ | Mengukur persentase varians target yang berhasil dijelaskan oleh model |
 
 Visualisasi evaluasi: **Confusion Matrix** (heatmap), **ROC Curve**, dan **Feature Importance** (bar chart).
 
@@ -276,11 +295,118 @@ Memahami trade-off dalam ML sangat krusial:
 - Evaluasi dengan **Silhouette Score** (seberapa mirip suatu titik dengan clusternya vs cluster lain)
 - **Adjusted Rand Index (ARI)** untuk membandingkan label cluster dengan ground truth
 
+### DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
+
+- Algoritma clustering berbasis kepadatan untuk mengidentifikasi cluster dengan bentuk arbitrer (tidak harus bulat)
+- Menangani noise/outliers secara alami (titik di area dengan densitas rendah dianggap sebagai noise)
+- Parameter kunci: `eps` (radius tetangga maksimal) dan `min_samples` (jumlah minimal titik tetangga dalam radius eps)
+
+### Hierarchical Clustering (Agglomerative)
+
+- Membangun klaster bertingkat secara bertahap menggunakan pendekatan _bottom-up_ (menggabungkan titik terdekat)
+- Hubungan antar cluster ditentukan oleh kriteria _linkage_ (Single, Complete, Average, atau Ward)
+- Visualisasi hubungan klaster menggunakan diagram pohon bernama **Dendrogram**
+
+### Gaussian Mixture Models (GMM)
+
+- Pendekatan klasterisasi probabilistik (_soft clustering_) berasumsi data dibangkitkan dari campuran beberapa distribusi Gaussian
+- Menggunakan algoritma **Expectation-Maximization (EM)** untuk mengestimasi parameter model
+- Memberikan probabilitas keanggotaan suatu titik di setiap klaster, bukan sekadar label kaku (_hard assignment_)
+
 ### PCA (Principal Component Analysis)
 
 - Teknik reduksi dimensi **linear** yang memproyeksikan data ke komponen utama (variance terbesar)
 - Digunakan untuk visualisasi data dimensi tinggi ke 2D/3D
 - Menunjukkan bahwa Iris dataset terpisah secara alami bahkan tanpa label
+
+### t-SNE (t-Distributed Stochastic Neighbor Embedding)
+
+- Teknik reduksi dimensi **non-linear** yang dikhususkan untuk visualisasi data dimensi tinggi ke ruang 2D/3D
+- Menjaga kemiripan titik-titik bertetangga dekat (local structure) lebih baik dibandingkan PCA pada data kompleks
+
+### Association Rule Learning (Aturan Asosiasi)
+
+- Metode untuk menemukan hubungan asosiatif menarik antar item dalam transaksi besar (Market Basket Analysis)
+- Algoritma populer: **Apriori** (berbasis threshold minimum support) dan **FP-Growth** (menggunakan struktur pohon untuk efisiensi)
+- Metrik kunci: **Support** (popularitas item), **Confidence** (kepastian aturan), dan **Lift** (kekuatan aturan asosiasi)
+
+### Anomaly Detection
+
+Mengidentifikasi pola langka/outlier yang menyimpang dari mayoritas data.
+
+**Dataset**: Transaction Fraud | **Notebook**: `15-Anomaly-Detection/Anomaly-Detection-Transactions.ipynb`
+
+| Algoritma                      | Konsep                                             | Parameter Kunci                |
+| :----------------------------- | :------------------------------------------------- | :----------------------------- |
+| **Isolation Forest**           | Mengisolasi outlier dengan random forest partition | `contamination`                |
+| **Local Outlier Factor (LOF)** | Membandingkan density lokal antar titik            | `n_neighbors`, `contamination` |
+
+- Unsupervised — tidak memerlukan label untuk training
+- Parameter `contamination` harus disesuaikan dengan ekspektasi proporsi anomali
+
+### Recommendation System
+
+Sistem rekomendasi yang menyarankan item berdasarkan kemiripan profil.
+
+**Dataset**: E-commerce Customer Behavior | **Notebook**: `17-Recommendation-System/Recommendation-Ecommerce.ipynb`
+
+| Pendekatan            | Konsep                                             |
+| :-------------------- | :------------------------------------------------- |
+| **Content-Based**     | Merekomendasikan item serupa berdasarkan fitur     |
+| **Cosine Similarity** | Mengukur kemiripan vektor antar profil             |
+| **K-NN**              | Mencari K tetangga terdekat dalam ruang fitur      |
+| **Segmentasi**        | Rekomendasi berdasarkan kelompok spending/behavior |
+
+- Content-based filtering tidak memerlukan data interaksi pengguna lain
+- Segmentasi membantu personalisasi rekomendasi
+
+---
+
+## Artificial Neural Network
+
+**Artificial Neural Network (ANN)** atau Jaringan Saraf Tiruan adalah model komputasi yang meniru struktur dan fungsi jaringan saraf biologis manusia untuk memproses informasi dan mengenali pola yang kompleks.
+
+### Varian Arsitektur ANN
+
+| Arsitektur      | Karakteristik Utama                                                                   | Contoh Penggunaan                                          |
+| :-------------- | :------------------------------------------------------------------------------------ | :--------------------------------------------------------- |
+| **FNN / MLP**   | Aliran informasi searah (_feedforward_), terdiri dari input, hidden, dan output layer | Data tabular, regresi, klasifikasi dasar                   |
+| **CNN**         | Menggunakan operasi konvolusi untuk mengenali pola spasial                            | Klasifikasi gambar, deteksi objek (_Computer Vision_)      |
+| **RNN / LSTM**  | Memiliki memori/umpan balik untuk memproses data berurutan                            | Analisis deret waktu (_time-series_), NLP, translasi       |
+| **Transformer** | Menggunakan mekanisme _Self-Attention_ untuk pemrosesan paralel                       | _Large Language Models_ (LLM) seperti GPT/Gemini           |
+| **Autoencoder** | Arsitektur kompresi-rekonstruksi (_Encoder-Decoder_)                                  | Reduksi dimensi, deteksi anomali, _denoising_              |
+| **GAN**         | Jaringan saraf yang berkompetisi (_Generator_ vs _Discriminator_)                     | Generasi gambar sintetis, transfer gaya (_style transfer_) |
+
+### Multi-Layer Perceptron (MLP)
+
+Multi-Layer Perceptron adalah arsitektur neural network dasar dengan _feedforward_ dan _backpropagation_.
+
+**Dataset**: Medical Conditions | **Notebook**: `13-MLP-Neural-Network/MLP-Medical-Conditions.ipynb`
+
+| Konsep                  | Penjelasan                                                                                  |
+| :---------------------- | :------------------------------------------------------------------------------------------ |
+| **Hidden Layer**        | Lapisan tersembunyi yang menangkap pola non-linear                                          |
+| **Activation Function** | Fungsi non-linear (ReLU, Tanh, atau Sigmoid) untuk memproses output neuron                  |
+| **Backpropagation**     | Algoritma pembaruan bobot (_weights_) berdasarkan gradien error dari belakang ke depan      |
+| **Loss Function**       | Mengukur tingkat kesalahan prediksi (Cross-entropy untuk klasifikasi, MSE untuk regresi)    |
+| **Learning Rate**       | Kecepatan model dalam memperbarui bobot — nilai terlalu tinggi dapat menyebabkan divergensi |
+
+- Arsitektur sederhana (1-2 hidden layer) cukup untuk dataset kecil/sedang
+- Loss curve digunakan untuk memonitor konvergensi selama proses training
+
+### Convolutional Neural Network (CNN)
+
+Convolutional Neural Network adalah arsitektur neural network yang dirancang khusus untuk memproses data spasial seperti gambar atau grid 2D/3D.
+
+| Komponen CNN              | Fungsi & Deskripsi                                                                                                        |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------ |
+| **Convolutional Layer**   | Menggunakan filter/kernel yang bergeser di atas gambar untuk mengekstrak fitur spasial (seperti garis, bentuk, atau pola) |
+| **Activation (ReLU)**     | Memperkenalkan sifat non-linear setelah proses konvolusi                                                                  |
+| **Pooling Layer**         | Mereduksi dimensi spasial (_downsampling_) menggunakan Max Pooling atau Average Pooling untuk menghemat komputasi         |
+| **Fully Connected Layer** | Meratakan (_flatten_) peta fitur menjadi satu vektor panjang dan menghubungkannya ke output layer klasifikasi             |
+
+- Sangat efisien karena menggunakan konsep _Weight Sharing_ (filter yang sama digunakan di seluruh bagian gambar)
+- Memiliki sifat _Translation Invariance_ (mampu mendeteksi objek di mana pun posisinya di dalam gambar)
 
 ---
 
@@ -318,22 +444,21 @@ Analisis mendalam terhadap **kesalahan prediksi** model Logistic Regression:
 
 ---
 
-## Ringkasan Performa
+## Model Deployment
 
-| Notebook                   | Model                    | Akurasi | AUC-ROC | Catatan                                          |
-| -------------------------- | ------------------------ | ------- | ------- | ------------------------------------------------ |
-| Linear Regression SMS      | `LinearRegression`       | 0.88    | —       | Threshold optimal via validation set             |
-| Logistic Regression Heart  | `LogisticRegression`     | 0.79    | 0.88    | Hyperparameter tuning via GridSearchCV           |
-| K-NN Social                | `KNeighborsClassifier`   | 0.93    | —       | k=3, Manhattan distance                          |
-| Naive Bayes Social         | `GaussianNB`             | 0.90    | —       | Decision boundary linear                         |
-| Naive Bayes SMS            | `MultinomialNB`          | —       | —       | Perbandingan dengan Linear Regression            |
-| Decision Tree Iris         | `DecisionTreeClassifier` | 0.97    | —       | Visualisasi pohon keputusan                      |
-| Decision Tree Iris CSV     | `DecisionTreeClassifier` | 1.00    | —       | Binary classification (2 kelas)                  |
-| Random Forest Kelulusan    | `RandomForestClassifier` | 0.50    | 0.50    | Dataset perlu investigasi lebih lanjut           |
-| K-Means + PCA Iris         | `KMeans` + `PCA`         | —       | —       | ARI & Silhouette Score untuk evaluasi clustering |
-| Feature Engineering Social | `LogisticRegression`     | 0.91    | —       | PolynomialFeatures + Interaction + Binning       |
-| K-Fold CV Heart            | Multiple models          | —       | —       | Boxplot stabilitas model, RF paling stabil       |
-| Error Analysis Heart       | `LogisticRegression`     | 0.79    | 0.88    | Deep dive FP/FN dengan confidence analysis       |
+Proses menyimpan model terlatih dan mengintegrasikannya ke aplikasi.
+
+**Dataset**: Iris (built-in) | **Notebook**: `16-Model-Deployment/Model-Deployment-Iris.ipynb`
+
+| Tahap               | Tools                            | Deskripsi                                   |
+| :------------------ | :------------------------------- | :------------------------------------------ |
+| **Serialization**   | `joblib`, `pickle`               | Menyimpan model ke file disk                |
+| **Deserialization** | `joblib.load()`, `pickle.load()` | Memuat model dari file disk                 |
+| **REST API**        | FastAPI + Uvicorn                | Mendeploy model sebagai web service         |
+| **Prediction**      | `model.predict()`                | Menggunakan model untuk inferensi data baru |
+
+- Joblib lebih direkomendasikan untuk scikit-learn dibanding pickle
+- REST API memungkinkan integrasi dengan aplikasi web/mobile
 
 ---
 
